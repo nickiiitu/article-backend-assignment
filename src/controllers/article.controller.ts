@@ -3,8 +3,12 @@ import Article from '../models/Article';
 import { validationResult } from 'express-validator';
 
 // Create a new article
-export const createArticle = async (req: Request, res: Response) => {
+interface IRequest extends Request{
+    user?:any
+}
+export const createArticle = async (req: IRequest, res: Response) => {
     try {
+        req.body.author=req.user.userId;
         const article = new Article(req.body);
         await article.save();
         res.status(201).json(article);
